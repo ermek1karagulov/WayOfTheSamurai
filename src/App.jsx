@@ -1,10 +1,10 @@
 import { Route, Routes } from "react-router-dom";
 import "./App.css";
-import Dialogs from "./components/dialogs/Dialogs";
 import Header from "./components/header/Header";
 import Navbar from "./components/navbar/Navbar";
 import Profile from "./components/profile/myPost/profile/Profile";
-import store from "./components/redux/state";
+import store from "./components/redux/store";
+import DialogsContainer from "./components/dialogs/DialogsContainer";
 
 function App(props) {
   return (
@@ -13,16 +13,8 @@ function App(props) {
       <Navbar />
       <div className="app-wrapper-comntent">
         <Routes>
-          <Route path="/dialogs" element={<Dialogs store={props.store} />} />
-          <Route
-            path="/profile"
-            element={
-              <Profile
-                state={props.state.profilePage}
-                dispatch={props.dispatch}
-              />
-            }
-          />
+          <Route path="/dialogs" element={<DialogsContainer />} />
+          <Route path="/profile" element={<Profile />} />
         </Routes>
       </div>
     </div>
