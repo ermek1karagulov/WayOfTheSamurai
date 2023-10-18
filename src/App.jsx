@@ -3,8 +3,8 @@ import "./App.css";
 import Header from "./components/header/Header";
 import Navbar from "./components/navbar/Navbar";
 import Profile from "./components/profile/myPost/profile/Profile";
-import store from "./components/redux/store";
 import DialogsContainer from "./components/dialogs/DialogsContainer";
+import UsersContainer from "./components/users/UsersContainer";
 
 function App(props) {
   return (
@@ -15,6 +15,7 @@ function App(props) {
         <Routes>
           <Route path="/dialogs" element={<DialogsContainer />} />
           <Route path="/profile" element={<Profile />} />
+          <Route path="/users" element={<UsersContainer />} />
         </Routes>
       </div>
     </div>
