@@ -4,7 +4,9 @@ const SET_USERS = "SET_USERS";
 
 let initialState = {
   users: [],
-  newPostText: "it-kamasutra.com",
+  pageSize: 5,
+  totalUsersCount: 0,
+  currentPage: 1,
 };
 
 const userReducer = (state = initialState, action) => {
