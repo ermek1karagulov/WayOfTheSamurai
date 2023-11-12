@@ -7,12 +7,12 @@ import { useLocation, useNavigate, useParams } from "react-router-dom";
 
 class ProfileContainer extends React.Component {
   componentDidMount() {
-    let profileId = this.props.router.params.profileId;
-    if (!profileId) {
-      profileId = 2;
+    let userId = this.props.router.params.userId;
+    if (!userId) {
+      userId = 10;
     }
     axios
-      .get(`https://social-network.samuraijs.com/api/1.0/profile/` + profileId)
+      .get(`https://social-network.samuraijs.com/api/1.0/profile/` + userId)
       .then((res) => {
         this.props.setUserProfile(res.data);
       });
@@ -35,7 +35,6 @@ function withRouter(Component) {
     let params = useParams();
     return <Component {...props} router={{ location, navigate, params }} />;
   }
-
   return ComponentWithRouterProp;
 }
 export default connect(mapStateToProps, { setUserProfile })(
