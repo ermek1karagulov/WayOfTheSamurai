@@ -1,3 +1,5 @@
+import { userAPI } from "../../api/api";
+
 const FOLLOW = "FOLLOW";
 const UNFOLLOW = "UNFOLLOW";
 const SET_USERS = "SET_USERS";
@@ -74,53 +76,82 @@ const userReducer = (state = initialState, action) => {
   }
 };
 
-export const follow = (userId) => {
+export const followSucces = (userId) => {
   return {
     type: FOLLOW,
     userId,
   };
 };
-
-export const unFollow = (userId) => {
+export const unFollowSucces = (userId) => {
   return {
     type: UNFOLLOW,
     userId,
   };
 };
-
 export const setUsers = (users) => {
   return {
     type: SET_USERS,
     users,
   };
 };
-
 export const setCurrentPage = (currentPage) => {
   return {
     type: SET_CURRENT_PAGE,
     currentPage,
   };
 };
-
 export const setUsersTotalCount = (totalUsersCount) => {
   return {
     type: SET_TOTAL_USERS_COUNT,
     count: totalUsersCount,
   };
 };
-
 export const toggleIsFetching = (isFetching) => {
   return {
     type: TOGGLE_IS_FETCHING,
     isFetching,
   };
 };
-
 export const toggleFollowingProgress = (isFetching, userId) => {
   return {
     type: TOGGLE_IS_FOLLOWING_PROGRESS,
     isFetching,
     userId,
+  };
+};
+
+export const getUsers = (currentPage, pageSize) => {
+  return (dispatch) => {
+    dispatch(toggleIsFetching(true));
+    userAPI.getUsers(currentPage, pageSize).then((data) => {
+      dispatch(toggleIsFetching(false));
+      dispatch(setUsers(data.items));
+      dispatch(setUsersTotalCount(data.totalCount));
+    });
+  };
+};
+
+export const follow = (userId) => {
+  return (dispatch) => {
+    dispatch(toggleFollowingProgress(true, userId));
+    userAPI.follow(userId).then((res) => {
+      if (res.data.resultCode === 0) {
+        dispatch(followSucces(userId));
+      }
+      dispatch(toggleFollowingProgress(false, userId));
+    });
+  };
+};
+
+export const unFollow = (userId) => {
+  return (dispatch) => {
+    dispatch(toggleFollowingProgress(true, userId));
+    userAPI.unFollow(userId).then((res) => {
+      if (res.data.resultCode === 0) {
+        dispatch(unFollowSucces(userId));
+      }
+      dispatch(toggleFollowingProgress(false, userId));
+    });
   };
 };
 
