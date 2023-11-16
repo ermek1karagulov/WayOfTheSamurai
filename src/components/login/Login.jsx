@@ -32,6 +32,9 @@ const LoginForm = (props) => {
         <Field component={Element} name="rememberMe" type="checkbox" />
         Remember me
       </div>
+      {props.error && (
+        <div style={{ color: "red", fontSize: "20px" }}>{props.error}</div>
+      )}
       <div>
         <button>Login</button>
       </div>
