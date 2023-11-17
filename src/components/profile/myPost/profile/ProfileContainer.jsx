@@ -2,7 +2,7 @@ import React from "react";
 import Profile from "./Profile";
 import { connect } from "react-redux";
 import axios from "axios";
-import { useLocation, useNavigate, useParams } from "react-router-dom";
+import { Link, useLocation, useNavigate, useParams } from "react-router-dom";
 import {
   getUserProfile,
   getStatus,
@@ -13,8 +13,11 @@ class ProfileContainer extends React.Component {
   componentDidMount() {
     let userId = this.props.router.params.userId;
     if (!userId) {
-      userId = this.props.authorizedUserId;
-      console.log(this.props.authorizedUserId);
+      userId = 2;
+      // userId = this.props.authorizedUserId;
+      if (!userId) {
+        <Link to={"/login"} />;
+      }
     }
     this.props.getUserProfile(userId);
     this.props.getStatus(userId);
@@ -40,7 +43,7 @@ let mapStateToProps = (state) => ({
   isAuth: state.auth.isAuth,
 });
 
-function withRouter(Component) {
+export function withRouter(Component) {
   function ComponentWithRouterProp(props) {
     let location = useLocation();
     let navigate = useNavigate();
