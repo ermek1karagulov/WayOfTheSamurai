@@ -156,4 +156,6 @@ export const unFollow = (userId) => {
   };
 };
 
+// Эч нерсе кылбадык
+
 export default userReducer;
