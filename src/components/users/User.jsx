@@ -1,10 +1,6 @@
 import React from "react";
-import styles from "./Users.module.css";
 import userPhoto from "./../../assets/images/user.png";
 import { NavLink } from "react-router-dom";
-import axios from "axios";
-import { userAPI } from "../../api/api";
-import Paginator from "../common/formsControls/paginator/Paginator";
 
 const User = ({ user, followingInProgress, unFollow, follow }) => {
   let u = user;
