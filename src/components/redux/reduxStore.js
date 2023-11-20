@@ -29,3 +29,5 @@ const store = createStore(reducers, composeEnhancers(applyMiddleware(thunk)));
 window.__store__ = store;
 
 export default store;
+
+// в принципе тесты нужны для больших сайтов
