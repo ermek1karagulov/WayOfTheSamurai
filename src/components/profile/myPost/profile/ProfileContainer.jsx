@@ -1,7 +1,6 @@
 import React from "react";
 import Profile from "./Profile";
 import { connect } from "react-redux";
-import axios from "axios";
 import { Link, useLocation, useNavigate, useParams } from "react-router-dom";
 import {
   getUserProfile,
@@ -10,7 +9,7 @@ import {
 } from "../../../redux/profileReducer";
 import { compose } from "redux";
 class ProfileContainer extends React.Component {
-  componentDidMount() {
+  refreshProfile() {
     let userId = this.props.router.params.userId;
     if (!userId) {
       userId = 2;
@@ -20,6 +19,13 @@ class ProfileContainer extends React.Component {
     }
     this.props.getUserProfile(userId);
     this.props.getStatus(userId);
+  }
+  componentDidMount() {
+    this.refreshProfile();
+  }
+  componentDidUpdate() {
+    if (this.props.router.params.userId != this.props.router.params.userId);
+    this.refreshProfile();
   }
   render() {
     return (
