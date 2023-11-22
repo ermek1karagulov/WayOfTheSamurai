@@ -12,7 +12,7 @@ class ProfileContainer extends React.Component {
   refreshProfile() {
     let userId = this.props.router.params.userId;
     if (!userId) {
-      userId = 2;
+      userId = this.props.authorizedUserId;
       if (!userId) {
         <Link to={"/login"} />;
       }
@@ -24,8 +24,9 @@ class ProfileContainer extends React.Component {
     this.refreshProfile();
   }
   componentDidUpdate() {
-    if (this.props.router.params.userId != this.props.router.params.userId);
-    this.refreshProfile();
+    if (this.props.router.params.userId != this.props.router.params.userId) {
+      return this.refreshProfile();
+    }
   }
   render() {
     return (
