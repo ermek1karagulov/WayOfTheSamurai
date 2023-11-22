@@ -61,5 +61,3 @@ export default compose(
   withRouter,
   connect(mapStateToProps, { initializApp })
 )(App);
-
-// FINAL
