@@ -62,4 +62,3 @@ export default compose(
   connect(mapStateToProps, { initializApp })
 )(App);
 
-// Welcome to it-kamasutra
