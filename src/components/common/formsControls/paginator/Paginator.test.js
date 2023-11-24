@@ -1,6 +1,6 @@
 import React from "react";
 import { create } from "react-test-renderer";
-import Paginator from "./Paginator";
+import Paginator from "./Paginator.ts";
 
 describe("Paginator component tests", () => {
   test("is pages count is more then 10 button Next should be present ", () => {

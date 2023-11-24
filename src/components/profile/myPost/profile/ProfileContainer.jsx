@@ -6,7 +6,7 @@ import {
   getUserProfile,
   getStatus,
   updateStatus,
-} from "../../../redux/profileReducer";
+} from "../../../redux/profileReducer.ts";
 import { compose } from "redux";
 class ProfileContainer extends React.Component {
   refreshProfile() {

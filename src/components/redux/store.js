@@ -1,5 +1,5 @@
-import dialogsReducer from "./dialogsReducer";
-import profileReducer from "./profileReducer";
+import dialogsReducer from "./dialogsReducer.ts";
+import profileReducer from "./profileReducer.ts";
 import sidebarReducer from "./sidebarReducer";
 
 let store = {
