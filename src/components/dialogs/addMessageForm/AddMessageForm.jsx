@@ -1,6 +1,6 @@
 import React from "react";
 import { Field, reduxForm } from "redux-form";
-import { Element } from "../../common/formsControls/FormsControls";
+import { Element } from "../../common/formsControls/FormsControls.tsx";
 import {
   maxlengthCreator,
   required,

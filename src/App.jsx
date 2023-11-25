@@ -7,7 +7,7 @@ import ProfileContainer, {
   withRouter,
 } from "./components/profile/myPost/profile/ProfileContainer";
 import HeaderContainer from "./components/header/HeaderContainer";
-import Login from "./components/login/Login";
+import Login from "./components/login/Login.tsx";
 import React, { Component, Suspense } from "react";
 import { connect } from "react-redux";
 import { initializApp } from "./components/redux/appReducer.ts";

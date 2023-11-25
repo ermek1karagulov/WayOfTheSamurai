@@ -5,7 +5,7 @@ import {
   maxlengthCreator,
   required,
 } from "../../../../utils/validators/validators";
-import { Element } from "../../../common/formsControls/FormsControls";
+import { Element } from "../../../common/formsControls/FormsControls.tsx";
 
 const Post = (props) => {
   return (

@@ -1,16 +1,24 @@
 import React from "react";
-import { Field, reduxForm } from "redux-form";
-import { Input } from "../common/formsControls/FormsControls";
-import { required } from "../../utils/validators/validators";
+import { Field, InjectedFormProps, reduxForm } from "redux-form";
+import { Input } from "../common/formsControls/FormsControls.tsx";
+import { required } from "../../utils/validators/validators.jsx";
 import { connect } from "react-redux";
 import { login } from "../redux/authReducer.ts";
 import { Navigate } from "react-router-dom";
+import { AppStateType } from "../redux/reduxStore.ts";
 
 const Element = Input("input");
 
-const LoginForm = (props) => {
+type LoginFormOwnProps = {
+  captchaUrl?: string | null;
+};
+
+const LoginForm: React.FC<
+  InjectedFormProps<LoginFormValuesType, LoginFormOwnProps> & LoginFormOwnProps
+> = (handleSubmit, error) => {
   return (
-    <form onSubmit={props.handleSubmit}>
+    // <form onSubmit={handleSubmit}>
+    <>
       <div>
         <Field
           placeholder="Email"
@@ -32,22 +40,36 @@ const LoginForm = (props) => {
         <Field component={Element} name="rememberMe" type="checkbox" />
         Remember me
       </div>
-      {props.error && (
-        <div style={{ color: "red", fontSize: "20px" }}>{props.error}</div>
-      )}
+      {error && <div style={{ color: "red", fontSize: "20px" }}>{error}</div>}
       <div>
         <button>Login</button>
       </div>
-    </form>
+    </>
+    // </form>
   );
 };
 
-const LoginReduxForm = reduxForm({
+const LoginReduxForm = reduxForm<LoginFormValuesType, LoginFormOwnProps>({
   form: "login",
 })(LoginForm);
 
-const Login = (props) => {
-  const onSubmit = (formData) => {
+type MapStatePropsType = {
+  isAuth: boolean;
+};
+type MapDispatchPropsType = {
+  login: (
+    email: string,
+    password: string | number,
+    rememberMe: boolean
+  ) => void;
+};
+type LoginFormValuesType = {
+  email: string;
+  password: string | number;
+  rememberMe: boolean;
+};
+const Login: React.FC<MapStatePropsType & MapDispatchPropsType> = (props) => {
+  const onSubmit = (formData: any) => {
     props.login(formData.email, formData.password, formData.rememberMe);
   };
 
@@ -63,7 +85,7 @@ const Login = (props) => {
   );
 };
 
-const mapStateToProps = (state) => ({
+const mapStateToProps = (state: AppStateType) => ({
   isAuth: state.auth.isAuth,
 });
 
