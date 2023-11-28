@@ -1,6 +1,7 @@
 import { stopSubmit } from "redux-form";
-import { profileAPI, userAPI } from "../../api/api.tsx";
 import { PhotosType, PostType, ProfileType } from "../../types/Types";
+import { profileAPI } from "../../api/profileApi.ts";
+import { ResultCodesEnum } from "../../api/api.ts";
 
 const ADD_POST = "ADD-POST";
 const SET_USER_PROFILE = "SET_USER_PROFILE";
@@ -115,38 +116,38 @@ export const savePhotoSuccess = (
   photos,
 });
 export const getUserProfile = (userId: number) => async (dispatch: any) => {
-  let res = await userAPI.getProfile(userId);
-  dispatch(setUserProfile(res.data));
+  let data = await profileAPI.getProfile(userId);
+  dispatch(setUserProfile(data));
 };
 export const getStatus = (userId: number) => async (dispatch: any) => {
-  let res = await profileAPI.getStatus(userId);
-  dispatch(setStatus(res.data));
+  let data = await profileAPI.getStatus(userId);
+  dispatch(setStatus(data));
 };
 export const updateStatus = (status: string) => async (dispatch: any) => {
-  let res = profileAPI.updateStatus(status);
-  if (res.data.resultCode === 0) {
+  let data = await profileAPI.updateStatus(status);
+  if (data.resultCode === ResultCodesEnum.Success) {
     dispatch(setStatus(status));
   }
 };
 
-export const savePhoto = (file: any) => async (dispatch: any) => {
-  let res = await profileAPI.savePhoto(file);
+// export const savePhoto = (file: any) => async (dispatch: any) => {
+//   let res = await profileAPI.savePhoto(file);
 
-  if (res.data.resultCode === 0) {
-    dispatch(savePhotoSuccess(res.data.data.photos));
-  }
-};
+//   if (res.data.resultCode === 0) {
+//     dispatch(savePhotoSuccess(res.data.data.photos));
+//   }
+// };
 
 export const saveProfile =
   (profile: any) => async (dispatch: any, getState: any) => {
     const userId = getState().auth.userId;
-    const res = await profileAPI.saveProfile(profile);
+    const data = await profileAPI.saveProfile(profile);
 
-    if (res.data.resultCode === 0) {
+    if (data.resultCode === 0) {
       dispatch(getUserProfile(userId));
     } else {
-      dispatch(stopSubmit("edit-profile", { _error: res.data.messages[0] }));
-      return Promise.reject(res.data.messages[0]);
+      dispatch(stopSubmit("edit-profile", { _error: data.messages[0] }));
+      return Promise.reject(data.messages[0]);
     }
   };
 

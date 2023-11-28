@@ -1,5 +1,6 @@
 import { stopSubmit } from "redux-form";
-import { ResultCodesEnum, authAPI } from "../../api/api.tsx";
+import { ResultCodesEnum } from "../../api/api.ts";
+import { authAPI } from "../../api/authApi.ts";
 
 const SET_USER_DATA = "samurai-network/auth/SET_USER_DATA";
 
@@ -58,12 +59,11 @@ export const getAuthUserData = () => async (dispatch: any) => {
 export const login =
   (email: string, password: number, rememberMe: any) =>
   async (dispatch: any) => {
-    let loginData = await authAPI.login(email, password, rememberMe);
-    if (loginData.resultCode === ResultCodesEnum.Success) {
+    let data = await authAPI.login(email, password, rememberMe);
+    if (data.resultCode === ResultCodesEnum.Success) {
       dispatch(getAuthUserData());
     } else {
-      let message =
-        loginData.messages.length > 0 ? loginData.messages[0] : "Some error";
+      let message = data.messages.length > 0 ? data.messages[0] : "Some error";
       dispatch(stopSubmit("login", { _error: message }));
     }
   };

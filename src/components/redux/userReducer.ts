@@ -1,10 +1,10 @@
 import { AppStateType } from "./reduxStore";
-import { userAPI } from "../../api/api.tsx";
 import { UserType } from "../../types/Types";
 import updateObjectInArray from "../../utils/objectHelpers";
 import { Dispatch } from "redux";
 import { ThunkAction } from "redux-thunk/es/types";
 import { InferActionsTypes } from "./reduxStore";
+import { userAPI } from "../../api/usersApi.ts";
 
 const FOLLOW = "FOLLOW";
 const UNFOLLOW = "UNFOLLOW";
