@@ -1,6 +1,8 @@
-import { stopSubmit } from "redux-form";
+import { FormAction, stopSubmit } from "redux-form";
 import { ResultCodesEnum } from "../../api/api.ts";
 import { authAPI } from "../../api/authApi.ts";
+import { type } from "os";
+import { BaseThunkType, InferActionsTypes } from "./reduxStore.ts";
 
 const SET_USER_DATA = "samurai-network/auth/SET_USER_DATA";
 
@@ -11,9 +13,10 @@ let initialState = {
   isAuth: false,
 };
 
-export type InitialStateType = typeof initialState;
-
-const authReducer = (state = initialState, action: any): InitialStateType => {
+const authReducer = (
+  state = initialState,
+  action: ActionsType
+): InitialStateType => {
   switch (action.type) {
     case SET_USER_DATA:
       return {
@@ -25,40 +28,29 @@ const authReducer = (state = initialState, action: any): InitialStateType => {
   }
 };
 
-type setAuthUserDataPayloadType = {
-  userId: number | null;
-  email: string | null;
-  login: string | null;
-  isAuth: boolean;
-};
-type setAuthUserDataType = {
-  type: typeof SET_USER_DATA;
-  payload: setAuthUserDataPayloadType;
-};
-
-export const setAuthUserData = (
-  userId: number | null,
-  email: string | null,
-  login: string | null,
-  isAuth: boolean
-): setAuthUserDataType => {
-  return {
-    type: SET_USER_DATA,
-    payload: { userId, email, login, isAuth },
-  };
+export const actions = {
+  setAuthUserData: (
+    userId: number | null,
+    email: string | null,
+    login: string | null,
+    isAuth: boolean
+  ) =>
+    ({
+      type: SET_USER_DATA,
+      payload: { userId, email, login, isAuth },
+    } as const),
 };
 
-export const getAuthUserData = () => async (dispatch: any) => {
+export const getAuthUserData = (): ThunkType => async (dispatch) => {
   let Medata = await authAPI.me();
   if (Medata.resultCode === ResultCodesEnum.Success) {
     let { id, email, login } = Medata.data;
-    dispatch(setAuthUserData(id, email, login, true));
+    dispatch(actions.setAuthUserData(id, email, login, true));
   }
 };
-
 export const login =
-  (email: string, password: number, rememberMe: any) =>
-  async (dispatch: any) => {
+  (email: string, password: number, rememberMe: any): ThunkType =>
+  async (dispatch) => {
     let data = await authAPI.login(email, password, rememberMe);
     if (data.resultCode === ResultCodesEnum.Success) {
       dispatch(getAuthUserData());
@@ -68,11 +60,15 @@ export const login =
     }
   };
 
-export const logout = () => async (dispatch: any) => {
+export const logout = (): ThunkType => async (dispatch) => {
   let res = await authAPI.logout();
   if (res.data.resultCode === 0) {
-    dispatch(setAuthUserData(null, null, null, false));
+    dispatch(actions.setAuthUserData(null, null, null, false));
   }
 };
 
 export default authReducer;
+
+export type InitialStateType = typeof initialState;
+type ActionsType = InferActionsTypes<typeof actions>;
+type ThunkType = BaseThunkType<ActionsType | FormAction>;
