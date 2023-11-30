@@ -1,25 +1,28 @@
-import { Route, Routes } from "react-router-dom";
+import { BrowserRouter, Route, Routes } from "react-router-dom";
 import "./App.css";
-import Navbar from "./components/navbar/Navbar";
+import Navbar from "./components/navbar/Navbar.jsx";
 // import DialogsContainer from "./components/dialogs/DialogsContainer";
 import UsersContainer from "./components/users/UsersContainer.tsx";
 import ProfileContainer, {
   withRouter,
-} from "./components/profile/myPost/profile/ProfileContainer";
-import HeaderContainer from "./components/header/HeaderContainer";
+} from "./components/profile/myPost/profile/ProfileContainer.tsx";
+import HeaderContainer from "./components/header/HeaderContainer.jsx";
 import Login from "./components/login/Login.tsx";
 import React, { Component, Suspense } from "react";
-import { connect } from "react-redux";
+import { Provider, connect } from "react-redux";
 import { initializApp } from "./components/redux/appReducer.ts";
 import { compose } from "redux";
-import Preloader from "./components/common/Preloader/Preloader";
-const DialogsContainer = React.lazy(() =>
-  import("./components/dialogs/DialogsContainer")
+import Preloader from "./components/common/Preloader/Preloader.jsx";
+import store, { AppStateType } from "./components/redux/reduxStore.ts";
+import { ComponentType } from "react";
+const DialogsContainer = React.lazy(
+  () => import("./components/dialogs/DialogsContainer.tsx")
 );
-
-// deploy
-
-class App extends Component {
+type PropsType = ReturnType<typeof mapStateToProps>;
+type DispatchPropsType = {
+  initializApp: () => void;
+};
+class App extends Component<PropsType & DispatchPropsType> {
   componentDidMount() {
     this.props.initializApp();
   }
@@ -56,14 +59,23 @@ class App extends Component {
   }
 }
 
-const mapStateToProps = (state) => ({
+const mapStateToProps = (state: AppStateType) => ({
   initialized: state.app.initialized,
 });
 
-export default compose(
+let AppContainer = compose<ComponentType>(
   withRouter,
   connect(mapStateToProps, { initializApp })
 )(App);
 
-// Welcome to it-kamasutra
-// ufgffff
+const SamuraiJsApp: React.FC = () => {
+  return (
+    <BrowserRouter>
+      <Provider store={store}>
+        <AppContainer />
+      </Provider>
+    </BrowserRouter>
+  );
+};
+
+export default SamuraiJsApp;
