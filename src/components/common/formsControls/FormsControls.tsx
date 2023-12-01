@@ -2,7 +2,7 @@ import React from "react";
 import s from "./FormsControls.module.css";
 
 export const Element =
-  (Element) =>
+  (Element: any) =>
   ({ input, meta, ...props }) => {
     const hasError = meta.touched && meta.error;
     return (
@@ -14,7 +14,7 @@ export const Element =
   };
 
 export const Input =
-  (Element) =>
+  (Element: any) =>
   ({ input, meta, ...props }) => {
     const hasError = meta.touched && meta.error;
     return (

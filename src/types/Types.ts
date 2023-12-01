@@ -10,7 +10,6 @@ export type ContactsType = {
   instagram: string;
   twitter: string;
   website: string;
-  toutibe: string;
   mainLink: string;
 };
 export type PhotosType = {
@@ -20,7 +19,8 @@ export type PhotosType = {
 export type ProfileType = {
   userId: number;
   lookingForAJob: boolean;
-  lookingForAJobDescription: string;
+  lookingForAJobDeskription: string;
+  aboutMe: string | null;
   fullName: string;
   contacts: ContactsType;
   photos: PhotosType;

@@ -1,5 +1,5 @@
 import React from "react";
-import MyPost from "./MyPost";
+import MyPost from "./MyPost.tsx";
 import { actions } from "../../../redux/profileReducer.ts";
 import { connect } from "react-redux";
 

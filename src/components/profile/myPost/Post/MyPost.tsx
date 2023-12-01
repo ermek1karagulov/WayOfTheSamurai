@@ -4,8 +4,9 @@ import { Field, reduxForm } from "redux-form";
 import {
   maxlengthCreator,
   required,
-} from "../../../../utils/validators/validators";
+} from "../../../../utils/validators/validators.jsx";
 import { Element } from "../../../common/formsControls/FormsControls.tsx";
+import { PostType } from "../../../../types/Types.ts";
 
 const Post = (props) => {
   return (
@@ -44,13 +45,18 @@ let AddNewPostFormRedux = reduxForm({
   form: "ProfileAddNewPostForm",
 })(AddNewPostForm);
 
-const MyPost = React.memo((props) => {
+type Propstype = {
+  posts: Array<PostType>;
+  addPost: (newPostText: string) => void;
+};
+
+const MyPost: React.FC<Propstype> = React.memo((props) => {
   let postsElements = [...props.posts].reverse().map((p) => {
     return <Post message={p.message} likeCount={p.likeCount} key={p.id} />;
   });
   let newPostElement = React.createRef();
 
-  let onAddPost = (values) => {
+  let onAddPost = (values: any) => {
     props.addPost(values.newPostText);
   };
 

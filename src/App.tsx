@@ -5,7 +5,7 @@ import Navbar from "./components/navbar/Navbar.jsx";
 import UsersContainer from "./components/users/UsersContainer.tsx";
 import ProfileContainer, {
   withRouter,
-} from "./components/profile/myPost/profile/ProfileContainer.tsx";
+} from "./components/profile/myPost/profile/ProfileContainer.jsx";
 import HeaderContainer from "./components/header/HeaderContainer.jsx";
 import Login from "./components/login/Login.tsx";
 import React, { Component, Suspense } from "react";

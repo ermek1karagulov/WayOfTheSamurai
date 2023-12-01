@@ -1,9 +1,8 @@
 import React from "react";
 import "./Dialogs.css";
-import DialogItem from "./DialogItem/DialogItem";
-import Message from "./Message/Message";
-import { Navigate } from "react-router-dom";
-import AddMessageForm from "./addMessageForm/AddMessageForm";
+import DialogItem from "./DialogItem/DialogItem.tsx";
+import Message from "./Message/Message.tsx";
+import AddMessageForm from "./addMessageForm/AddMessageForm.tsx";
 import { InitialStateType } from "../redux/dialogsReducer";
 
 type PropsType = {
@@ -29,7 +28,7 @@ const Dialogs: React.FC<PropsType> = (props) => {
       <div className="dialogs-item">{dialogsElements}</div>
       <div className="messages">
         <div>{messagesElements}</div>
-        <AddMessageForm onSubmit={addNewMessage} />
+        <AddMessageForm />
       </div>
     </div>
   );

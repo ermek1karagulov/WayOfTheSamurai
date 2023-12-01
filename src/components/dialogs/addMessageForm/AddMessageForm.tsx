@@ -4,12 +4,16 @@ import { Element } from "../../common/formsControls/FormsControls.tsx";
 import {
   maxlengthCreator,
   required,
-} from "../../../utils/validators/validators";
+} from "../../../utils/validators/validators.jsx";
 
 const maxLength50 = maxlengthCreator(50);
 const Textarea = Element("textarea");
 
-const AddMessageForm = (props) => {
+type PropsType = {
+  handleSubmit: any;
+};
+
+const AddMessageForm: React.FC<PropsType> = (props) => {
   return (
     <form onSubmit={props.handleSubmit}>
       <div>

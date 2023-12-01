@@ -1,5 +1,5 @@
 import React from "react";
-import Profile from "./Profile.jsx";
+import Profile from "./Profile.tsx";
 import { connect } from "react-redux";
 import { Link, useLocation, useNavigate, useParams } from "react-router-dom";
 import {
@@ -8,9 +8,10 @@ import {
   updateStatus,
 } from "../../../redux/profileReducer.ts";
 import { compose } from "redux";
+import { AppStateType } from "../../../redux/reduxStore.ts";
 class ProfileContainer extends React.Component {
   refreshProfile() {
-    let userId = this.props.router.params.userId;
+    let userId = this.props.userId;
     if (!userId) {
       userId = this.props.authorizedUserId;
       if (!userId) {
@@ -41,7 +42,7 @@ class ProfileContainer extends React.Component {
     );
   }
 }
-let mapStateToProps = (state) => ({
+let mapStateToProps = (state: AppStateType) => ({
   profile: state.profilePage.profile,
   status: state.profilePage.status,
   authorizedUserId: state.auth.userId,
