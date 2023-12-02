@@ -2,7 +2,6 @@ import { BrowserRouter, Route, Routes } from "react-router-dom";
 import "./App.css";
 import Navbar from "./components/navbar/Navbar.jsx";
 // import DialogsContainer from "./components/dialogs/DialogsContainer";
-import UsersContainer from "./components/users/UsersContainer.tsx";
 import ProfileContainer, {
   withRouter,
 } from "./components/profile/myPost/profile/ProfileContainer.jsx";
@@ -15,6 +14,7 @@ import { compose } from "redux";
 import Preloader from "./components/common/Preloader/Preloader.jsx";
 import store, { AppStateType } from "./components/redux/reduxStore.ts";
 import { ComponentType } from "react";
+import { UsersPage } from "./components/users/UsersContainer.tsx";
 const DialogsContainer = React.lazy(
   () => import("./components/dialogs/DialogsContainer.tsx")
 );
@@ -48,7 +48,7 @@ class App extends Component<PropsType & DispatchPropsType> {
               <Route path="/profile" element={<ProfileContainer />} />
               <Route
                 path="/users"
-                element={<UsersContainer pageTitle="Самурай" />}
+                element={<UsersPage pageTitle="Самурай" />}
               />
               <Route path="/login" element={<Login />} />
             </Routes>

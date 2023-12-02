@@ -10,7 +10,7 @@ import dialogsReducer from "./dialogsReducer.ts";
 import sideBarReducer from "./sidebarReducer.ts";
 import userReducer from "./userReducer.ts";
 import authReducer from "./authReducer.ts";
-import thunk, { ThunkAction } from "redux-thunk";
+import thunk, { ThunkAction, ThunkDispatch } from "redux-thunk";
 import { reducer as formReducer } from "redux-form";
 import appReducer from "./appReducer.ts";
 
@@ -35,6 +35,7 @@ export type BaseThunkType<
   A extends Action = Action,
   R = Promise<void>
 > = ThunkAction<R, AppStateType, unknown, A>;
+export type AppDispatch = ThunkDispatch<AppStateType, unknown, AnyAction>;
 
 // @ts-ignore
 const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
