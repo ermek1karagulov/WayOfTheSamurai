@@ -14,6 +14,8 @@ import thunk, { ThunkAction, ThunkDispatch } from "redux-thunk";
 import { reducer as formReducer } from "redux-form";
 import appReducer from "./appReducer.ts";
 
+// hook is goood
+
 let rootReducer = combineReducers({
   profilePage: profileReducer,
   dialogsPage: dialogsReducer,
