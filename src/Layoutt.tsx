@@ -18,6 +18,7 @@ import DialogsContainer from "./components/dialogs/DialogsContainer.tsx";
 import ProfileContainer from "./components/profile/myPost/profile/ProfileContainer.jsx";
 import { UsersPage } from "./components/users/UsersContainer.tsx";
 import Login from "./components/login/Login.tsx";
+import ChatPage from "./pages/Chat/ChatPage.tsx";
 
 interface Props {
   /**
@@ -29,9 +30,10 @@ interface Props {
 
 const drawerWidth = 240;
 const navItems = [
-  { label: "Home", link: "/profile" },
-  { label: "About", link: "/users" },
-  { label: "Contact", link: "dialogs" },
+  { label: "Profile", link: "/profile" },
+  { label: "Users", link: "/users" },
+  { label: "Contact", link: "/dialogs" },
+  { label: "Chat", link: "/chat" },
 ];
 
 export default function DrawerAppBar(props: Props) {
@@ -132,6 +134,7 @@ export default function DrawerAppBar(props: Props) {
       <Box component="main" style={{ width: "100%" }} sx={{ p: 3 }}>
         <Toolbar />
         <Routes>
+          <Route path="/chat" element={<ChatPage />} />
           <Route path="/dialogs" element={<DialogsContainer />} />
           <Route path="/profile/:userId?" element={<ProfileContainer />} />
           <Route path="/profile" element={<ProfileContainer />} />
