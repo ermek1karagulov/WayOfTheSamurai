@@ -1,6 +1,7 @@
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import "./App.css";
 import Navbar from "./components/navbar/Navbar.jsx";
+// import "antd/dist/antd.css";
 // import DialogsContainer from "./components/dialogs/DialogsContainer";
 import ProfileContainer, {
   withRouter,
@@ -15,6 +16,7 @@ import Preloader from "./components/common/Preloader/Preloader.jsx";
 import store, { AppStateType } from "./components/redux/reduxStore.ts";
 import { ComponentType } from "react";
 import { UsersPage } from "./components/users/UsersContainer.tsx";
+import Layoutt from "./Layoutt.tsx";
 const DialogsContainer = React.lazy(
   () => import("./components/dialogs/DialogsContainer.tsx")
 );
@@ -31,30 +33,31 @@ class App extends Component<PropsType & DispatchPropsType> {
       return <Preloader />;
     }
     return (
-      <Suspense
-        fallback={
-          <div>
-            <Preloader />
-          </div>
-        }
-      >
-        <div className="app-wrapper">
-          <HeaderContainer />
-          <Navbar />
-          <div className="app-wrapper-comntent">
-            <Routes>
-              <Route path="/dialogs" element={<DialogsContainer />} />
-              <Route path="/profile/:userId?" element={<ProfileContainer />} />
-              <Route path="/profile" element={<ProfileContainer />} />
-              <Route
-                path="/users"
-                element={<UsersPage pageTitle="Самурай" />}
-              />
-              <Route path="/login" element={<Login />} />
-            </Routes>
-          </div>
-        </div>
-      </Suspense>
+      <Layoutt />
+      // <Suspense
+      //   fallback={
+      //     <div>
+      //       <Preloader />
+      //     </div>
+      //   }
+      // >
+      //   <div className="app-wrapper">
+      //     <HeaderContainer />
+      //     <Navbar />
+      //     <div className="app-wrapper-comntent">
+      //       <Routes>
+      //         <Route path="/dialogs" element={<DialogsContainer />} />
+      //         <Route path="/profile/:userId?" element={<ProfileContainer />} />
+      //         <Route path="/profile" element={<ProfileContainer />} />
+      //         <Route
+      //           path="/users"
+      //           element={<UsersPage pageTitle="Самурай" />}
+      //         />
+      //         <Route path="/login" element={<Login />} />
+      //       </Routes>
+      //     </div>
+      //   </div>
+      // </Suspense>
     );
   }
 }

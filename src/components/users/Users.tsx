@@ -14,6 +14,7 @@ import {
 } from "../redux/usersSelectors.ts";
 import { useDispatch } from "react-redux";
 import { AppDispatch } from "../redux/reduxStore.ts";
+import { useNavigate } from "react-router-dom";
 
 type PropsType = {};
 
@@ -26,6 +27,14 @@ export const Users: React.FC<PropsType> = (props) => {
   const followingInProgress = useSelector(getFollowingInProgress);
 
   const dispatch: AppDispatch = useDispatch();
+  const history = useNavigate();
+
+  useEffect(() => {
+    history({
+      pathname: "/users",
+      search: `?term=${filter.term}&friend=${filter.friend}&page=${currentPage}`,
+    });
+  }, [filter, currentPage]);
 
   useEffect(() => {
     dispatch(requestUsers(currentPage, pageSize, filter));
