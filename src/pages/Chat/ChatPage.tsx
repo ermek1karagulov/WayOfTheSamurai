@@ -1,10 +1,6 @@
 import { type } from "os";
 import React, { useEffect, useState } from "react";
 
-const wc = new WebSocket(
-  "wss://social-network.samuraijs.com/handlers/ChatHandler.ashx"
-);
-
 export type ChatMessageType = {
   message: string;
   photo: string;
@@ -21,23 +17,52 @@ const ChatPage: React.FC = () => {
 };
 
 const Chat: React.FC = () => {
+  const [wcChannel, setWcChannel] = useState<WebSocket | null>(null);
+  useEffect(() => {
+    let wc: WebSocket;
+    const closeHandler = () => {
+      console.log("close wc");
+      setTimeout(createChannel, 3000);
+    };
+
+    function createChannel() {
+      wc?.removeEventListener("close", closeHandler);
+      wc?.close();
+
+      wc = new WebSocket(
+        "wss://social-network.samuraijs.com/handlers/ChatHandler.ashx"
+      );
+      wc.addEventListener("close", closeHandler);
+      setWcChannel(wc);
+    }
+    createChannel();
+    return () => {
+      wc.removeEventListener("close", closeHandler);
+      wc.close();
+    };
+  }, []);
+
   return (
     <div>
-      <Messages />
-      <AddMessageForm />
+      <Messages wcChannel={wcChannel} />
+      <AddMessageForm wcChannel={wcChannel} />
     </div>
   );
 };
 
-const Messages: React.FC = () => {
+const Messages: React.FC<{ wcChannel: WebSocket | null }> = ({ wcChannel }) => {
   const [messages, setMessages] = useState<ChatMessageType[]>([]);
 
   useEffect(() => {
-    wc.addEventListener("message", (e) => {
+    let messageHandler = (e: MessageEvent) => {
       let newMessages = JSON.parse(e.data);
       setMessages((prevMessages) => [...prevMessages, ...newMessages]);
-    });
-  }, []);
+    };
+    wcChannel?.addEventListener("message", messageHandler);
+    return () => {
+      wcChannel?.removeEventListener("message", messageHandler);
+    };
+  }, [wcChannel]);
 
   return (
     <div style={{ height: "400px", overflowY: "auto" }}>
@@ -60,13 +85,27 @@ const Message: React.FC<{ message: ChatMessageType }> = ({ message }) => {
   );
 };
 
-const AddMessageForm: React.FC = () => {
+const AddMessageForm: React.FC<{ wcChannel: WebSocket | null }> = ({
+  wcChannel,
+}) => {
   const [message, setMessage] = useState("");
+  const [readytatus, setReadyStatus] = useState<"pending" | "ready">("pending");
+
+  useEffect(() => {
+    let openHandler = () => {
+      setReadyStatus("ready");
+    };
+    wcChannel?.addEventListener("open", openHandler);
+    return () => {
+      wcChannel?.removeEventListener("open", openHandler);
+    };
+  }, [wcChannel]);
+
   const sendMessage = () => {
     if (!message) {
       return;
     }
-    wc.send(message);
+    wcChannel?.send(message);
     setMessage("");
   };
   return (
@@ -78,7 +117,12 @@ const AddMessageForm: React.FC = () => {
         ></textarea>
       </div>
       <div>
-        <button onClick={sendMessage}>Отправить</button>
+        <button
+          disabled={wcChannel === null || readytatus !== "ready"}
+          onClick={sendMessage}
+        >
+          Отправить
+        </button>
       </div>
     </div>
   );
