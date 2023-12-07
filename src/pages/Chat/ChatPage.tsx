@@ -61,10 +61,8 @@ const Message: React.FC<{ message: ChatMessageType }> = ({ message }) => {
 
 const AddMessageForm: React.FC<{}> = ({}) => {
   const [message, setMessage] = useState("");
-  const [readyStatus, setReadyStatus] = useState<"pending" | "ready">(
-    "pending"
-  );
   const dispatch: AppDispatch = useDispatch();
+  const status = useSelector((state: AppStateType) => state.chat.status);
 
   const sendMessageHandler = () => {
     if (!message) {
@@ -82,7 +80,7 @@ const AddMessageForm: React.FC<{}> = ({}) => {
         ></textarea>
       </div>
       <div>
-        <button disabled={false} onClick={sendMessageHandler}>
+        <button disabled={status !== "ready"} onClick={sendMessageHandler}>
           Отправить
         </button>
       </div>

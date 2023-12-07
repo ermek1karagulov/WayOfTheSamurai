@@ -1,6 +1,12 @@
-let subscribes = [] as SubscriberType[];
+import { type } from "os";
+
+let subscribers = {
+  "message-received": [] as MessagesReceivedSubscriberType[],
+  "status-changed": [] as StatusChangedSubscribedType[],
+};
 
 let wc: WebSocket | null = null;
+type EventsNamesType = "message-received" | "status-changed";
 
 const closeHandler = () => {
   console.log("close wc");
@@ -9,11 +15,16 @@ const closeHandler = () => {
 
 const messageHandler = (e: MessageEvent) => {
   const newMessages = JSON.parse(e.data);
-  subscribes.forEach((s) => s(newMessages));
+  subscribers["message-received"].forEach((s) => s(newMessages));
+};
+
+const cleanUp = () => {
+  wc?.removeEventListener("close", closeHandler);
+  wc?.removeEventListener("message", messageHandler);
 };
 
 function createChannel() {
-  wc?.removeEventListener("close", closeHandler);
+  cleanUp();
   wc?.close();
   wc = new WebSocket(
     "wss://social-network.samuraijs.com/handlers/ChatHandler.ashx"
@@ -27,26 +38,42 @@ export const ChatAPI = {
     createChannel();
   },
   stop() {
-    subscribes = [];
-    ws?.removeEventListener("close", closeHandler);
-    wc?.removeEventListener("message", messageHandler);
+    subscribers["message-received"] = [];
+    subscribers["status-changed"] = [];
+    cleanUp();
     wc?.close();
   },
-  subscribe(callback: SubscriberType) {
-    subscribes.push(callback);
+  subscribe(
+    eventName: EventsNamesType,
+    callback: MessagesReceivedSubscriberType | StatusChangedSubscribedType
+  ) {
+    // @ts-ignore
+    subscribers[eventName].push(callback);
     return () => {
-      subscribes = subscribes.filter((s) => s !== callback);
+      // @ts-ignore
+      subscribers[eventName] = subscribers[eventName].filter(
+        (s) => s !== callback
+      );
     };
   },
-  unsubscribe(callback: SubscriberType) {
-    subscribes = subscribes.filter((s) => s !== callback);
+  unsubscribe(
+    eventName: EventsNamesType,
+    callback: MessagesReceivedSubscriberType
+  ) {
+    // @ts-ignore
+    subscribers[eventName] = subscribers[eventName].filter(
+      (s) => s !== callback
+    );
   },
   sendMessage(message: string) {
     wc?.send(message);
   },
 };
 
-type SubscriberType = (messages: ChatMessageType[]) => void;
+type MessagesReceivedSubscriberType = (messages: ChatMessageType[]) => void;
+type StatusChangedSubscribedType = (status: StatusType) => void;
+export type StatusType = "pending" | "ready";
+
 export type ChatMessageType = {
   message: string;
   photo: string;
