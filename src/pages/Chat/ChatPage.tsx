@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { ChatMessageType } from "../../api/ChatAPI";
 import { useDispatch } from "react-redux";
 import {
@@ -20,6 +20,8 @@ const ChatPage: React.FC = () => {
 const Chat: React.FC = () => {
   const dispatch: AppDispatch = useDispatch();
 
+  const status = useSelector((state: AppStateType) => state.chat.status);
+
   useEffect(() => {
     dispatch(startMessagesListening());
     return () => {
@@ -29,20 +31,31 @@ const Chat: React.FC = () => {
 
   return (
     <div>
-      <Messages />
-      <AddMessageForm />
+      {status === "error" && (
+        <div>Some error ocurred. Please refresh the page</div>
+      )}
+      <>
+        <Messages />
+        <AddMessageForm />
+      </>
     </div>
   );
 };
 
 const Messages: React.FC<{}> = ({}) => {
+  const messagesAanchorRef = useRef<HTMLDivElement>(null);
   const messages = useSelector((state: AppStateType) => state.chat.messages);
+
+  useEffect(() => {
+    messagesAanchorRef.current?.scrollIntoView({ behavior: "smooth" });
+  }, [messages]);
 
   return (
     <div style={{ height: "400px", overflowY: "auto" }}>
       {messages.map((m, index) => (
         <Message key={index} message={m} />
       ))}
+      <div ref={messagesAanchorRef}></div>
     </div>
   );
 };
@@ -80,7 +93,7 @@ const AddMessageForm: React.FC<{}> = ({}) => {
         ></textarea>
       </div>
       <div>
-        <button disabled={status !== "ready"} onClick={sendMessageHandler}>
+        <button disabled={status === "ready"} onClick={sendMessageHandler}>
           Отправить
         </button>
       </div>

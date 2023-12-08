@@ -57,13 +57,25 @@ const newMessageHandlerCreator = (dispatch: Dispatch) => {
   return _newMessageHandler;
 };
 
+let _statusChangedHandler: ((status: StatusType) => void) | null = null;
+const statusChangedHandlerCreator = (dispatch: Dispatch) => {
+  if (_statusChangedHandler === null) {
+    _statusChangedHandler = (status) => {
+      dispatch(actions.statusChanged(status));
+    };
+  }
+  return _statusChangedHandler;
+};
+
 export const startMessagesListening = (): ThunkType => async (dispatch) => {
   ChatAPI.start();
   ChatAPI.subscribe("message-received", newMessageHandlerCreator(dispatch));
+  ChatAPI.subscribe("status-changed", statusChangedHandlerCreator(dispatch));
 };
 
 export const stopMessagesListening = (): ThunkType => async (dispatch) => {
   ChatAPI.unsubscribe("message-received", newMessageHandlerCreator(dispatch));
+  ChatAPI.unsubscribe("status-changed", statusChangedHandlerCreator(dispatch));
   ChatAPI.stop();
 };
 
