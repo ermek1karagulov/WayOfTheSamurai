@@ -8,6 +8,7 @@ import {
 } from "../../components/redux/chatReducer.ts";
 import { useSelector } from "react-redux";
 import { AppDispatch, AppStateType } from "../../components/redux/reduxStore";
+// изучали хуки
 
 const ChatPage: React.FC = () => {
   return (
@@ -19,16 +20,13 @@ const ChatPage: React.FC = () => {
 
 const Chat: React.FC = () => {
   const dispatch: AppDispatch = useDispatch();
-
   const status = useSelector((state: AppStateType) => state.chat.status);
-
   useEffect(() => {
     dispatch(startMessagesListening());
     return () => {
       dispatch(stopMessagesListening());
     };
   }, []);
-
   return (
     <div>
       {status === "error" && (
