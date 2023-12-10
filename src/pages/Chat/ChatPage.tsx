@@ -43,6 +43,7 @@ const Chat: React.FC = () => {
 const Messages: React.FC<{}> = ({}) => {
   const messagesAanchorRef = useRef<HTMLDivElement>(null);
   const messages = useSelector((state: AppStateType) => state.chat.messages);
+  // изучение useEffect
 
   useEffect(() => {
     messagesAanchorRef.current?.scrollIntoView({ behavior: "smooth" });
