@@ -2,8 +2,6 @@ import React from "react";
 import "./Profile.css";
 import MyPostContainer from "../Post/MyPostContainer.tsx";
 import ProfileInfo from "./../ProfileInfo/ProfileInfo.tsx";
-import { ProfileType } from "../../../../types/Types.ts";
-import { type } from "os";
 
 type PropsType = {
   profile: any;
