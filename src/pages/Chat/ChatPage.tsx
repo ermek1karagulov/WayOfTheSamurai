@@ -12,8 +12,8 @@ import { AppDispatch, AppStateType } from "../../components/redux/reduxStore";
 const ChatPage: React.FC = () => {
   return (
     <div>
+      kn
       <Chat />
-      klsjhfoia
     </div>
   );
 };
