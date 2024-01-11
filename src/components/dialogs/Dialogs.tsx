@@ -28,6 +28,7 @@ const Dialogs: React.FC<PropsType> = (props) => {
       <div className="dialogs-item">{dialogsElements}</div>
       <div className="messages">
         <div>{messagesElements}</div>
+        lmkdmm
         <AddMessageForm />
       </div>
     </div>
