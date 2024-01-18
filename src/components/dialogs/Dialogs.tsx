@@ -30,6 +30,7 @@ const Dialogs: React.FC<PropsType> = (props) => {
         <div>{messagesElements}</div>
         <AddMessageForm />
       </div>
+      kghu
     </div>
   );
 };
